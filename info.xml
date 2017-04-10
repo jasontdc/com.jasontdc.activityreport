@@ -1,17 +1,17 @@
 <?xml version="1.0"?>
 <extension key="com.jasontdc.activityreport" type="module">
   <file>activityreport</file>
-  <name>FIXME</name>
-  <description>FIXME</description>
+  <name>Extended Activity Reports</name>
+  <description>Provides additional activity reports containing extended contact details.</description>
   <license>MIT</license>
   <maintainer>
     <author>Jason Davies</author>
     <email>jasontdc@gmail.com</email>
   </maintainer>
   <urls>
-    <url desc="Main Extension Page">http://FIXME</url>
-    <url desc="Documentation">http://FIXME</url>
-    <url desc="Support">http://FIXME</url>
+    <url desc="Main Extension Page">https://github.com/jasontdc/com.jasontdc.activityreport</url>
+    <url desc="Documentation">https://github.com/jasontdc/com.jasontdc.activityreport</url>
+    <url desc="Support">https://github.com/jasontdc/com.jasontdc.activityreport</url>
     <url desc="Licensing">http://opensource.org/licenses/MIT</url>
   </urls>
   <releaseDate>2017-04-10</releaseDate>
