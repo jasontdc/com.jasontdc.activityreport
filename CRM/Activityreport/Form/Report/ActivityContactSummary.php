@@ -304,6 +304,7 @@ class CRM_Activityreport_Form_Report_ActivityContactSummary extends CRM_Report_F
               $this->_columnHeaders["{$tableName}_{$fieldName}"]['title'] = CRM_Utils_Array::value('title', $field);
               $this->_columnHeaders["{$tableName}_{$fieldName}"]['no_display'] = CRM_Utils_Array::value('no_display', $field);
             }
+            $this->_selectAliases[] = "{$tableName}_{$fieldName}";
           }
         }
       }
@@ -653,5 +654,4 @@ class CRM_Activityreport_Form_Report_ActivityContactSummary extends CRM_Report_F
       }
     }
   }
-
 }
