@@ -11,8 +11,8 @@ return array (
     'params' => 
     array (
       'version' => 3,
-      'label' => 'ActivityContactSummary',
-      'description' => 'ActivityContactSummary (com.jasontdc.activityreport)',
+      'label' => 'Activity Contact Summary',
+      'description' => 'Provides a list of constituent activity details, including basic and custom fields for target contacts.',
       'class_name' => 'CRM_Activityreport_Form_Report_ActivityContactSummary',
       'report_url' => 'report/activitycontactsummary',
       'component' => '',
