@@ -60,6 +60,7 @@ class CRM_Activityreport_Form_Report_ActivityContactSummary extends CRM_Report_F
    * Class constructor.
    */
   public function __construct() {
+    $this->optimisedForOnlyFullGroupBy = FALSE;
     $this->_columns = array(
       'civicrm_activity' => array(
         'dao' => 'CRM_Activity_DAO_Activity',
@@ -403,9 +404,9 @@ class CRM_Activityreport_Form_Report_ActivityContactSummary extends CRM_Report_F
       $groupBy = "{$this->_aliases['civicrm_activity']}.id";
       $this->_groupBy = "GROUP BY {$this->_aliases['civicrm_activity']}.id ";
     }
-    if ($includeSelectCol) {
-      $this->_groupBy = CRM_Contact_BAO_Query::getGroupByFromSelectColumns($this->_selectClauses, $groupBy);
-    }
+    //if ($includeSelectCol) {
+    //  $this->_groupBy = CRM_Contact_BAO_Query::getGroupByFromSelectColumns($this->_selectClauses, $groupBy);
+    //}
   }
 
   /**
@@ -459,14 +460,14 @@ class CRM_Activityreport_Form_Report_ActivityContactSummary extends CRM_Report_F
     $this->beginPostProcess();
 
     // build query
-    $sql = $this->buildQuery(TRUE);
+    $sql = $this->buildQuery(FALSE);
 
     // main sql statement
     $this->select();
     $this->from();
     $this->customDataFrom();
     $this->where();
-    $this->groupBy();
+    $this->groupBy(FALSE);
     $this->orderBy();
 
     // order_by columns not selected for display need to be included in SELECT
