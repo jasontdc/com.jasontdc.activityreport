@@ -14,14 +14,24 @@
     <url desc="Support">https://github.com/jasontdc/com.jasontdc.activityreport</url>
     <url desc="Licensing">http://opensource.org/licenses/MIT</url>
   </urls>
-  <releaseDate>2017-04-10</releaseDate>
-  <version>0.1</version>
+  <releaseDate>2026-10-22</releaseDate>
+  <version>0.2</version>
   <develStage>alpha</develStage>
   <compatibility>
-    <ver>4.2</ver>
+    <ver>5.59</ver>
   </compatibility>
   <comments>This is a new, undeveloped module</comments>
   <civix>
     <namespace>CRM/Activityreport</namespace>
+    <format>26.10.3</format>
   </civix>
+  <mixins>
+    <mixin>mgd-php@2.0.0</mixin>
+    <mixin>smarty-v2@1.0.3</mixin>
+    <mixin>scan-classes@1.0.0</mixin>
+  </mixins>
+  <classloader>
+    <psr0 prefix="CRM_" path="."/>
+    <psr4 prefix="Civi\" path="Civi"/>
+  </classloader>
 </extension>
