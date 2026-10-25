@@ -241,7 +241,7 @@ class CRM_Activityreport_Form_Report_ActivityContactSummary extends CRM_Report_F
    */
   public function from($durationMode = FALSE) {
     $activityContacts = CRM_Core_OptionGroup::values('activity_contacts', FALSE, FALSE, FALSE, NULL, 'name');
-    $targetID = CRM_Utils_Array::key('Activity Targets', $activityContacts);
+    $targetID = array_search('Activity Targets', $activityContacts, TRUE);
 
     if (!$durationMode) {
       $this->_from = "
@@ -328,21 +328,21 @@ class CRM_Activityreport_Form_Report_ActivityContactSummary extends CRM_Report_F
 
         foreach ($table['filters'] as $fieldName => $field) {
           $clause = NULL;
-          if (CRM_Utils_Array::value('type', $field) & CRM_Utils_Type::T_DATE) {
-            $relative = CRM_Utils_Array::value("{$fieldName}_relative", $this->_params);
-            $from = CRM_Utils_Array::value("{$fieldName}_from", $this->_params);
-            $to = CRM_Utils_Array::value("{$fieldName}_to", $this->_params);
+          if ((($field['type'] ?? 0) & CRM_Utils_Type::T_DATE)) {
+            $relative = $this->_params["{$fieldName}_relative"] ?? NULL;
+            $from = $this->_params["{$fieldName}_from"] ?? NULL;
+            $to = $this->_params["{$fieldName}_to"] ?? NULL;
 
-            $clause = $this->dateClause($field['name'], $relative, $from, $to, $field['type']);
+            $clause = $this->dateClause($field['name'] ?? $fieldName, $relative, $from, $to, $field['type'] ?? NULL);
           }
           else {
-            $op = CRM_Utils_Array::value("{$fieldName}_op", $this->_params);
+            $op = $this->_params["{$fieldName}_op"] ?? NULL;
             if ($op) {
               $clause = $this->whereClause($field,
                 $op,
-                CRM_Utils_Array::value("{$fieldName}_value", $this->_params),
-                CRM_Utils_Array::value("{$fieldName}_min", $this->_params),
-                CRM_Utils_Array::value("{$fieldName}_max", $this->_params)
+                $this->_params["{$fieldName}_value"] ?? NULL,
+                $this->_params["{$fieldName}_min"] ?? NULL,
+                $this->_params["{$fieldName}_max"] ?? NULL
               );
             }
           }
@@ -425,10 +425,12 @@ class CRM_Activityreport_Form_Report_ActivityContactSummary extends CRM_Report_F
           $errors['fields'] = ts("Please do not select GroupBy 'Activity Date' with GroupBy 'Contact'");
         }
         else {
-          foreach ($fields['fields'] as $fieldName => $val) {
-            if (in_array($fieldName, $contactFields)) {
-              $errors['fields'] = ts("Please do not select any Contact Fields with GroupBy 'Activity Date'");
-              break;
+          if (!empty($fields['fields']) && is_array($fields['fields'])) {
+            foreach ($fields['fields'] as $fieldName => $val) {
+              if (in_array($fieldName, $contactFields)) {
+                $errors['fields'] = ts("Please do not select any Contact Fields with GroupBy 'Activity Date'");
+                break;
+              }
             }
           }
         }
@@ -438,10 +440,12 @@ class CRM_Activityreport_Form_Report_ActivityContactSummary extends CRM_Report_F
     // don't allow add to group action unless contact fields are selected.
     if (isset($fields['_qf_ActivitySummary_submit_group'])) {
       $contactFieldSelected = FALSE;
-      foreach ($fields['fields'] as $fieldName => $val) {
-        if (in_array($fieldName, $contactFields)) {
-          $contactFieldSelected = TRUE;
-          break;
+      if (!empty($fields['fields']) && is_array($fields['fields'])) {
+        foreach ($fields['fields'] as $fieldName => $val) {
+          if (in_array($fieldName, $contactFields)) {
+            $contactFieldSelected = TRUE;
+            break;
+          }
         }
       }
 
@@ -505,8 +509,8 @@ class CRM_Activityreport_Form_Report_ActivityContactSummary extends CRM_Report_F
     $activityStatus = CRM_Core_PseudoConstant::activityStatus();
     $onHover = ts('View Contact Summary for this Contact');
     foreach ($rows as $rowNum => $row) {
-      if (array_key_exists('civicrm_contact_sort_name', $row) && $this->_outputMode != 'csv') {
-        if ($value = $row['civicrm_contact_id']) {
+      if (array_key_exists('civicrm_contact_sort_name', $row) && ($this->_outputMode ?? '') !== 'csv') {
+        if ($value = ($row['civicrm_contact_id'] ?? NULL)) {
           $url = CRM_Utils_System::url('civicrm/contact/view',
             'reset=1&cid=' . $value,
             $this->_absoluteUrl
@@ -519,11 +523,13 @@ class CRM_Activityreport_Form_Report_ActivityContactSummary extends CRM_Report_F
       }
 
       if (array_key_exists('civicrm_activity_activity_type_id', $row)) {
-        if ($value = $row['civicrm_activity_activity_type_id']) {
+        if ($value = ($row['civicrm_activity_activity_type_id'] ?? NULL)) {
 
           $value = explode(',', $value);
           foreach ($value as $key => $id) {
-            $value[$key] = $activityType[$id];
+            if (isset($activityType[$id])) {
+              $value[$key] = $activityType[$id];
+            }
           }
 
           $rows[$rowNum]['civicrm_activity_activity_type_id'] = implode(' , ', $value);
@@ -532,9 +538,11 @@ class CRM_Activityreport_Form_Report_ActivityContactSummary extends CRM_Report_F
       }
 
       if (array_key_exists('civicrm_activity_status_id', $row)) {
-        if ($value = $row['civicrm_activity_status_id']) {
-          $rows[$rowNum]['civicrm_activity_status_id'] = $activityStatus[$value];
-          $entryFound = TRUE;
+        if ($value = ($row['civicrm_activity_status_id'] ?? NULL)) {
+          if (isset($activityStatus[$value])) {
+            $rows[$rowNum]['civicrm_activity_status_id'] = $activityStatus[$value];
+            $entryFound = TRUE;
+          }
         }
       }
 
