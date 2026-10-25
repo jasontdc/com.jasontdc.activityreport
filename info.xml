@@ -15,10 +15,10 @@
     <url desc="Licensing">http://opensource.org/licenses/MIT</url>
   </urls>
   <releaseDate>2026-10-22</releaseDate>
-  <version>0.2</version>
+  <version>0.3</version>
   <develStage>alpha</develStage>
   <compatibility>
-    <ver>5.59</ver>
+    <ver>5.82</ver>
   </compatibility>
   <comments>This is a new, undeveloped module</comments>
   <civix>
@@ -27,8 +27,8 @@
   </civix>
   <mixins>
     <mixin>mgd-php@2.0.0</mixin>
-    <mixin>smarty-v2@1.0.3</mixin>
     <mixin>scan-classes@1.0.0</mixin>
+    <mixin>smarty@1.0.3</mixin>
   </mixins>
   <classloader>
     <psr0 prefix="CRM_" path="."/>
